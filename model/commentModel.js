@@ -7,11 +7,6 @@ const commentSchema = mongoose.Schema(
       type: String,
       required: [true, "Comment cannot be empty"],
     },
-    user: {
-      type: mongoose.Schema.ObjectId,
-      ref: "User",
-      required: [true, "A comment must belong to a User"],
-    },
     blog: {
       type: mongoose.Schema.ObjectId,
       ref: "Blog",
