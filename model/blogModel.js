@@ -23,6 +23,11 @@ const blogSchema = mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+blogSchema.virtual("comments", {
+  ref: "Comment",
+  foreignField: "blog",
+  localField: "_id",
+});
 
 blogSchema.pre(/^find/, function (next) {
   this.populate({
