@@ -17,3 +17,21 @@ exports.createComment = async (req, res, next) => {
     next(err);
   }
 };
+exports.updateComment = async (req, res, next) => {
+  try {
+    const updatedData = await Comment.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        runValidators: false,
+        new: true,
+      }
+    );
+    res.status(204).json({
+      status: "success",
+      data: updatedData,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
