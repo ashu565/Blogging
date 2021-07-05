@@ -49,12 +49,12 @@ exports.updateProfilePhoto = async (req, res, next) => {
     const result = await cloudinary.uploader.upload(req.file.path);
     // console.log(result);
     console.log(req.user);
-    const user = await req.user;
+    const user = req.user;
     user.avatar = result.secure_url;
     user.cloudinary_id = result.public_id;
-
     await user.save({
       validateBeforeSave: false,
+      new: true,
     });
     res.status(200).json({
       status: "success",
