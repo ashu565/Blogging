@@ -2,7 +2,7 @@ const User = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const crypto = require("crypto");
-const sendEmail = require("../utils/email");
+const Email = require("../utils/email");
 const AppError = require("../utils/AppError");
 
 exports.signup = async (req, res, next) => {
@@ -108,11 +108,7 @@ exports.forgotPassword = async (req, res, next) => {
 
     const message = `Forgot your password ? submit a patch reqest with your new password click to ${resetURL}`;
     try {
-      await sendEmail({
-        email: user.email,
-        subject: "Your password reset Token",
-        message,
-      });
+      await new Email(user, resetURL).sendPasswordReset();
       res.status(200).json({
         status: "success",
         message: "Token send to email!",
@@ -122,7 +118,7 @@ exports.forgotPassword = async (req, res, next) => {
       user.passwordResetToken = undefined;
       user.passwordResetExpires = undefined;
       await user.save({ validateBeforeSave: false });
-      return next(new AppError("There is a problem in sending a mail"), 400);
+      return next(new AppError("There was an error in sending a mail"), 400);
     }
   } catch (err) {
     next(err);
@@ -151,6 +147,7 @@ exports.resetPassword = async (req, res, next) => {
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
     await user.save();
+    user.password = undefined;
     res.status(200).json({
       status: "success",
       data: {
