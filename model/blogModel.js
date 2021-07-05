@@ -17,6 +17,10 @@ const blogSchema = mongoose.Schema(
       ref: "User",
       required: "A Blog Must belong to a user",
     },
+    Likes: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     toJSON: { virtuals: true },

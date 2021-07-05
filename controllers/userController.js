@@ -47,9 +47,10 @@ exports.deleteMe = async (req, res, next) => {
 exports.updateProfilePhoto = async (req, res, next) => {
   try {
     const result = await cloudinary.uploader.upload(req.file.path);
-    // console.log(result);
-    console.log(req.user);
     const user = req.user;
+    if (user.avatar) {
+      await cloudinary.uploader.destroy(user.cloudinary_id);
+    }
     user.avatar = result.secure_url;
     user.cloudinary_id = result.public_id;
     await user.save({
@@ -61,6 +62,26 @@ exports.updateProfilePhoto = async (req, res, next) => {
       data: {
         user,
       },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+exports.deleteProfilePhoto = async (req, res, next) => {
+  try {
+    const user = req.user;
+    if (user.avatar) {
+      await cloudinary.uploader.destroy(user.cloudinary_id);
+    }
+    user.avatar = undefined;
+    user.cloudinary_id = undefined;
+    await user.save({
+      validateBeforeSave: false,
+      new: true,
+    });
+    res.status(201).json({
+      status: "success",
+      data: null,
     });
   } catch (err) {
     next(err);

@@ -31,11 +31,9 @@ const userSchema = mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "",
     },
     cloudinary_id: {
       type: String,
-      default: "",
     },
     passwordResetToken: String,
     passwordResetExpires: Date,
