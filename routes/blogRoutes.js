@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post("/createBlog", authController.protect, blogController.createBlog);
 router.get("/getAllBlog", authController.protect, blogController.getAllBlog);
+router.get("/getBlog/:blogId", authController.protect, blogController.getBlog);
 router.get(
   "/getAllBlogFromUser/:id",
   authController.protect,

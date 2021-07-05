@@ -29,6 +29,12 @@ const userSchema = mongoose.Schema(
       default: true,
       select: false,
     },
+    avatar: {
+      type: String,
+    },
+    cloudinary_id: {
+      type: String,
+    },
     passwordResetToken: String,
     passwordResetExpires: Date,
   },

@@ -20,9 +20,24 @@ exports.createBlog = async (req, res, next) => {
 };
 exports.getAllBlog = async (req, res, next) => {
   try {
-    const document = await Blog.find().populate("comments");
+    const document = await Blog.find();
     console.log(document);
     res.status(201).json({
+      status: "success",
+      data: {
+        document,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+exports.getBlog = async (req, res, next) => {
+  try {
+    const document = await Blog.findOne({
+      _id: req.params.blogId,
+    }).populate("comments");
+    res.status(200).json({
       status: "success",
       data: {
         document,

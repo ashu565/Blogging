@@ -1,5 +1,6 @@
 const User = require("../model/userModel");
-const AppError = require("../model/userModel");
+const cloudinary = require("../utils/cloudinary");
+const multer = require("../utils/multer");
 
 exports.updateMe = async (req, res, next) => {
   try {
@@ -37,6 +38,29 @@ exports.deleteMe = async (req, res, next) => {
     res.status(204).json({
       status: "success",
       data: null,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updateProfilePhoto = async (req, res, next) => {
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path);
+    // console.log(result);
+    console.log(req.user);
+    const user = await req.user;
+    user.avatar = result.secure_url;
+    user.cloudinary_id = result.public_id;
+
+    await user.save({
+      validateBeforeSave: false,
+    });
+    res.status(200).json({
+      status: "success",
+      data: {
+        user,
+      },
     });
   } catch (err) {
     next(err);
