@@ -5,7 +5,7 @@ const userRoute = require("./routes/userRoutes");
 const blogRoute = require("./routes/blogRoutes");
 const AppError = require("./utils/AppError");
 const globalErrorHandler = require("./utils/globalErrorHandler");
-
+const cors = require("cors");
 const app = express();
 
 //parse urlencoded request body
@@ -14,6 +14,8 @@ app.use(express.json());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+// allow other request to get access
+app.use(cors());
 
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/auth", userRoute);

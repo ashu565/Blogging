@@ -19,6 +19,7 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
+      minLength: [8, "A Password Must not be less than 8 character"],
       required: [true, "Invalid Password"],
     },
     passwordConfirm: {
@@ -47,6 +48,7 @@ userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
+
   this.password = await bcryptjs.hash(this.password, 8);
   this.passwordConfirm = undefined;
   next();
@@ -73,7 +75,7 @@ userSchema.methods.createPasswordResetToken = function () {
     .update(resetToken)
     .digest("hex");
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-  console.log({ resetToken }, this.passwordResetToken);
+  // console.log({ resetToken }, this.passwordResetToken);
   return resetToken;
 };
 const User = mongoose.model("User", userSchema);

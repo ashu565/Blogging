@@ -18,7 +18,7 @@ exports.signup = async (req, res, next) => {
       email,
       password,
       passwordConfirm,
-    });
+    }); // create run on "save" middleware
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     user.password = undefined;
     user.passwordConfirm = undefined;
@@ -174,17 +174,22 @@ exports.updatePassword = async (req, res, next) => {
     if (newPassword !== newPasswordConfirm) {
       return next(new AppError("Passwords do not match Same"), 400);
     }
+    if (newPassword.length <= 8) {
+      return next(
+        new AppError("New Password must be greater than 8 characters")
+      );
+    }
     user.password = newPassword;
     user.passwordConfirm = newPassword;
-    await user.save();
+    console.log("Hello");
+
+    await user.save({ validateBeforeSave: false, new: true });
     user.password = undefined;
     user.passwordConfirm = undefined;
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
     res.status(201).json({
-      data: {
-        user,
-        token,
-      },
+      status: "success",
+      data: null,
     });
   } catch (err) {
     next(err);

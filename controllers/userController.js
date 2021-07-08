@@ -17,7 +17,7 @@ exports.updateMe = async (req, res, next) => {
       req.user._id,
       filtered_updated_details,
       {
-        runValidators: true,
+        runValidators: false,
         new: true,
       }
     );
