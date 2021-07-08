@@ -21,12 +21,9 @@ exports.createBlog = async (req, res, next) => {
 exports.getAllBlog = async (req, res, next) => {
   try {
     const document = await Blog.find();
-    console.log(document);
+    // console.log(document);
     res.status(201).json({
-      status: "success",
-      data: {
-        document,
-      },
+      document,
     });
   } catch (err) {
     next(err);

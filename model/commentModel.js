@@ -12,6 +12,10 @@ const commentSchema = mongoose.Schema(
       ref: "Blog",
       required: [true, "A comment must belong to a blog"],
     },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: "User",
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -30,6 +34,13 @@ commentSchema.pre("save", function (next) {
   this.populate({
     path: "user",
     select: "first_name last_name email",
+  });
+  next();
+});
+commentSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "user",
+    select: "first_name last_name",
   });
   next();
 });
