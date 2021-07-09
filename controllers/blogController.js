@@ -1,5 +1,5 @@
 const Blog = require("../model/blogModel");
-// const AppError = require("../utils/AppError");
+const APIFeatures = require("../utils/ApiFeatures");
 exports.createBlog = async (req, res, next) => {
   try {
     const { author, title, description } = req.body;
@@ -20,8 +20,8 @@ exports.createBlog = async (req, res, next) => {
 };
 exports.getAllBlog = async (req, res, next) => {
   try {
-    const document = await Blog.find();
-    // console.log(document);
+    const features = new APIFeatures(Blog.find(), req.query).filter().sort();
+    const document = await features.query;
     res.status(201).json({
       document,
     });

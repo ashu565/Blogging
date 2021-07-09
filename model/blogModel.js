@@ -27,11 +27,6 @@ const blogSchema = mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
-blogSchema.virtual("comments", {
-  ref: "Comment",
-  foreignField: "blog",
-  localField: "_id",
-});
 
 /* don't get confuse between virtual populate and normal populate 
  Normal Populate -> Here Just you have to populate the data you defined in your own schema 

@@ -1,12 +1,15 @@
 const Comment = require("../model/commentModel");
+const APIFeatures = require("../utils/ApiFeatures");
 
 exports.getAllComments = async (req, res, next) => {
   try {
-    const comment = await Comment.find({
-      blog: req.params.id,
-    });
+    const features = new APIFeatures(Comment.find(), req.query)
+      .filter()
+      .sort()
+      .paginate();
+    const document = await features.query;
     res.status(201).json({
-      comment,
+      comment: document,
     });
   } catch (err) {
     next(err);
@@ -29,6 +32,19 @@ exports.createComment = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteComment = async (req, res, next) => {
+  try {
+    await Comment.findByIdAndDelete(req.params.id);
+    res.status(201).json({
+      status: "success",
+      data: null,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.updateComment = async (req, res, next) => {
   try {
     const updatedData = await Comment.findByIdAndUpdate(

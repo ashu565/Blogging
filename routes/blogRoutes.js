@@ -27,5 +27,6 @@ router.post(
   authController.protect,
   commentController.createComment
 );
-router.get("/getAllComments/:id", commentController.getAllComments);
+router.get("/getAllComments", commentController.getAllComments);
+router.delete("/deleteComment/:id", commentController.deleteComment);
 module.exports = router;
