@@ -17,11 +17,22 @@ router.patch(
   authController.protect,
   blogController.updateBlog
 );
+router.patch(
+  "/updateLikes",
+  authController.protect,
+  blogController.updateLikes
+);
+router.patch(
+  "/deleteLikes",
+  authController.protect,
+  blogController.deleteLikes
+);
 router.delete(
   "/deleteBlog/:id",
   authController.protect,
   blogController.deleteBlog
 );
+
 router.post(
   "/createComment",
   authController.protect,

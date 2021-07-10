@@ -90,3 +90,47 @@ exports.deleteBlog = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.updateLikes = async (req, res, next) => {
+  try {
+    const { userId, blogId } = req.body;
+    let blog = await Blog.findById(blogId);
+    const index = blog.Likes.indexOf(userId);
+    if (index === -1) {
+      blog.Likes.push(userId);
+    }
+    blog.likes = blog.Likes.length;
+    await blog.save({
+      runValidators: false,
+      new: true,
+    });
+    res.status(201).json({
+      status: "success",
+      likes: blog.likes,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteLikes = async (req, res, next) => {
+  try {
+    const { userId, blogId } = req.body;
+    let blog = await Blog.findById(blogId);
+    const filtered_blog = blog.Likes.filter((value) => {
+      return value !== userId;
+    });
+    blog.Likes = filtered_blog;
+    blog.likes = blog.Likes.length;
+    await blog.save({
+      runValidators: false,
+      new: true,
+    });
+    res.status(200).json({
+      status: "success",
+      likes: blog.likes,
+    });
+  } catch (err) {
+    next(err);
+  }
+};

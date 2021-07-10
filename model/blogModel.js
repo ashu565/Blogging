@@ -18,6 +18,10 @@ const blogSchema = mongoose.Schema(
       required: "A Blog Must belong to a user",
     },
     Likes: {
+      type: [String],
+      default: [],
+    },
+    likes: {
       type: Number,
       default: 0,
     },
