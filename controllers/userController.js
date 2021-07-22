@@ -46,8 +46,10 @@ exports.deleteMe = async (req, res, next) => {
 
 exports.updateProfilePhoto = async (req, res, next) => {
   try {
+    // console.log(req);
     const result = await cloudinary.uploader.upload(req.file.path);
     const user = req.user;
+
     if (user.avatar) {
       await cloudinary.uploader.destroy(user.cloudinary_id);
     }
@@ -55,7 +57,6 @@ exports.updateProfilePhoto = async (req, res, next) => {
     user.cloudinary_id = result.public_id;
     await user.save({
       validateBeforeSave: false,
-      new: true,
     });
     res.status(200).json({
       status: "success",

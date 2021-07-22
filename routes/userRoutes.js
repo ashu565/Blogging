@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.patch("/updateMe", authController.protect, userController.updateMe);
 router.patch("/deleteMe", authController.protect, userController.deleteMe);
-router.patch(
+router.post(
   "/updateProfilePhoto",
   authController.protect,
   multer.single("image"),

@@ -102,9 +102,7 @@ exports.forgotPassword = async (req, res, next) => {
     const resetToken = await user.createPasswordResetToken();
     await user.save(); // error block yet to be implemented
     // SEND EMAIL via Node Mailer
-    const resetURL = `${req.protocol}://${req.get(
-      "host"
-    )}/api/v1/auth/resetPassword/${resetToken}`;
+    const resetURL = `http://localhost:4000/resetPassword/${resetToken}`;
 
     const message = `Forgot your password ? submit a patch reqest with your new password click to ${resetURL}`;
     try {
